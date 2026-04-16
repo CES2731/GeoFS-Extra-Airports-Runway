@@ -17,3 +17,15 @@ the new added runways have **usable PAPI light** and **runway overlay**,
 but the new runways haven't ILS and nav data,so you can't see it and tp to it from the map
 
 ### You can use the Simbrief or manually modify the navigation data file to use ILS normally
+
+## 3.Effect display image
+
+**Add RWY10 for ZJHK**
+
+### Before
+
+<img width="1311" height="1323" alt="屏幕截图 2026-04-16 233241" src="https://github.com/user-attachments/assets/1e9401a7-3cc6-43ea-81a9-5639841551c7" />
+
+### Affter
+
+<img width="1688" height="1471" alt="屏幕截图 2026-04-16 232715" src="https://github.com/user-attachments/assets/d59bf574-447d-468d-a6a4-beb3d82e2006" />
