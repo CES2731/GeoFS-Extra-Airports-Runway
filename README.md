@@ -20,7 +20,7 @@ but the new runways haven't ILS and nav data,so you can't see it and tp to it fr
 
 ## 3.Effect display image
 
-**Add RWY10 for ZJHK**
+**Add RWY10 for ZJHK,you can see the new added runway on the left**
 
 ### Before
 
