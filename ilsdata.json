@@ -70,5 +70,29 @@
         "freq": 111950,
         "slope": 3.0,
         "major": true
+    },
+    {
+        "icao": "ZGGG",
+        "ident": "01L",
+        "lat": 23.38065353643404,
+        "lon": 113.27527686574065,
+        "heading": 14.00,
+        "lengthFt": 11155,
+        "widthFt": 147,
+        "freq": 109500,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "ZGGG",
+        "ident": "20L",
+        "lat": 23.410492977276764,
+        "lon": 113.28332989255775,
+        "heading": 194.00,
+        "lengthFt": 11155,
+        "widthFt": 147,
+        "freq": 108950,
+        "slope": 3.0,
+        "major": true
     }
 ]
