@@ -13,7 +13,7 @@
 
 ## Add ILS data
 
-1.Copy the **ilsdataloader.js** and paste it into the browser console
+Copy the **ilsdataloader.js** and paste it into the browser console
 
 ## About this addon
 
