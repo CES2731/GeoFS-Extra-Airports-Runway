@@ -34,5 +34,17 @@
         "freq": 109350,
         "slope": 3.0,
         "major": true
+    },
+    {
+        "icao": "ZJHK",
+        "ident": "10",
+        "lat": 19.953732020428898,
+        "lon": 110.44826872960125,
+        "heading": 89.82,
+        "lengthFt": 11811,
+        "widthFt": 196,
+        "freq": 108950,
+        "slope": 3.0,
+        "major": true
     }
 ]
