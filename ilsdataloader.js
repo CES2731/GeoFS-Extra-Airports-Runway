@@ -9,7 +9,7 @@
     // ==================== 用户配置区域 ====================
     const CONFIG = {
         // 将下面的 URL 替换为您的 GitHub Raw JSON 文件链接
-        GITHUB_RAW_URL: 'https://raw.githubusercontent.com/你的用户名/仓库名/分支/runways.json'
+        GITHUB_RAW_URL: 'https://raw.githubusercontent.com/CES2731/GeoFS-Extra-Airports-Runway/refs/heads/main/ilsdata.json'
     };
     // ====================================================
 
