@@ -22,5 +22,29 @@
         "freq": 109100,
         "slope": 3.0,
         "major": true
+    },
+    {
+        "iaco": "ZJHK",
+        "indent": "28",
+        "lay": 19.95382502845635,
+        "lon": 110.48275808337726,
+        "heading": 269.82,
+        "lengthFt": 11811,
+        "widthFt": 196,
+        "freq": 109350,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "iaco": "ZJHK",
+        "indent": "10",
+        "lay": 19.953732020428898,
+        "lon": 110.44826872960125,
+        "heading": 89.82,
+        "lengthFt": 11811,
+        "widthFt": 196,
+        "freq": 108950,
+        "slope": 3.0,
+        "major": true
     }
 ]
