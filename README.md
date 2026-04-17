@@ -21,6 +21,10 @@ This addon add some runways which were missing in GeoFS's runways database,
 
 the new added runways have **usable PAPI light** ,**usebale ILS** and **runway overlay**
 
+**If you have any runways need to add,please contact me and send me the relevant materials**
+
+Discord:MU2731 QQ:1830524785@qq.com
+
 ## Effect display image
 
 **Add RWY10 for ZJHK,you can see the new added runway on the left**
