@@ -8,15 +8,17 @@
 
 3.Reload the terrain (**not the game!**) ,you can choose anouther airport far away from which airport you currently at,and then change back
 
+## Add ILS data
+
+1.Copy the **ilsdataloader.js** and paste it into the browser console
+
+2.Copy the **ils.js** and paste into the browser console
+
 ## About this addon
 
 This addon add some runways which were missing in GeoFS's runways database,
 
-the new added runways have **usable PAPI light** and **runway overlay**,
-
-but the new runways haven't ILS and nav data,so you can't see it and tp to it from the map
-
-### You can use the Simbrief or manually modify the navigation data file to use ILS normally
+the new added runways have **usable PAPI light** ,**usebale ILS** and **runway overlay**
 
 ## 3.Effect display image
 
