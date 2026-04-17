@@ -10,8 +10,6 @@
 
 1.Copy the **ilsdataloader.js** and paste it into the browser console
 
-2.Copy the **ils.js** and paste into the browser console
-
 ## About this addon
 
 This addon add some runways which were missing in GeoFS's runways database,
