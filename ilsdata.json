@@ -172,10 +172,10 @@
         "ident": "04R",
         "lat": 25.12188888888889,
         "lon": 102.95405555555556,
-        "heading": 34.00,
+        "heading": 38.40,
         "lengthFt": 13123,
         "widthFt": 148,
-        "freq": 109550,
+        "freq": 111700,
         "slope": 3.0,
         "major": true
     },
@@ -184,10 +184,10 @@
         "ident": "22L",
         "lat": 25.08400000000000,
         "lon": 102.95405555555556,
-        "heading": 214.00,
+        "heading": 218.40,
         "lengthFt": 13123,
         "widthFt": 148,
-        "freq": 110950,
+        "freq": 109950,
         "slope": 3.0,
         "major": true
     }
