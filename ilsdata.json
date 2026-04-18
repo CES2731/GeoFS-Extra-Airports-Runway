@@ -142,5 +142,29 @@
         "freq": 111550,
         "slope": 3.0,
         "major": true
+    },
+    {
+        "icao": "ZSHZ",
+        "ident": "18",
+        "lat": 35.225069621108,
+        "lon": 115.73394652444549,
+        "heading": 169.27,
+        "lengthFt": 8530,
+        "widthFt": 147,
+        "freq": 112050,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "ZSHZ",
+        "ident": "36",
+        "lat": 35.20204465176139,
+        "lon": 115.73927176165014,
+        "heading": 349.27,
+        "lengthFt": 8530,
+        "widthFt": 147,
+        "freq": 109550,
+        "slope": 3.0,
+        "major": true
     }
 ]
