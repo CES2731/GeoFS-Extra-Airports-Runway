@@ -190,5 +190,17 @@
         "freq": 109950,
         "slope": 3.0,
         "major": true
+    },
+    {
+        "icao": "ZSWZ",
+        "ident": "03",
+        "lat": 27.895791016972858,
+        "lon": 120.8444939195928,
+        "heading": 28.22,
+        "lengthFt": 10948,
+        "widthFt": 148,
+        "freq": 110300,
+        "slope": 3.0,
+        "major": true
     }
 ]
