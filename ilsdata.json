@@ -166,5 +166,29 @@
         "freq": 109550,
         "slope": 3.0,
         "major": true
+    },
+    {
+        "icao": "ZPPP",
+        "ident": "04",
+        "lat": 25.12188888888889,
+        "lon": 102.95405555555556,
+        "heading": 34.00,
+        "lengthFt": 13123,
+        "widthFt": 148,
+        "freq": 109900,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "ZPPP",
+        "ident": "22",
+        "lat": 25.08400000000000,
+        "lon": 102.95405555555556,
+        "heading": 214.00,
+        "lengthFt": 13123,
+        "widthFt": 148,
+        "freq": 110300,
+        "slope": 3.0,
+        "major": true
     }
 ]
