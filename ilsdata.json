@@ -262,5 +262,29 @@
         "freq": 111900,
         "slope": 3.0,
         "major": true
+    },
+    {
+        "icao": "ZGHA",
+        "ident": "36R",
+        "lat": 28.174885571568254,
+        "lon": 113.22453505120683,
+        "heading": 356.9,
+        "lengthFt": 12467,
+        "widthFt": 197,
+        "freq": 109300,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "ZGHA",
+        "ident": "18L",
+        "lat": 28.209080475430145,
+        "lon": 113.22242675617072,
+        "heading": 176.9,
+        "lengthFt": 12467,
+        "widthFt": 197,
+        "freq": 111100,
+        "slope": 3.0,
+        "major": true
     }
 ]
