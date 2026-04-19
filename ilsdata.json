@@ -286,4 +286,77 @@
         "freq": 111100,
         "slope": 3.0,
         "major": true
+    },
+    {
+        "icao": "ZHCC",
+        "ident": "12L",
+        "lat": 34.53949439265037,
+        "lon": 113.84063685451726,
+        "heading": 112,
+        "lengthFt": 11811,
+        "widthFt": 197,
+        "freq": 110700,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "ZHCC",
+        "ident": "30R",
+        "lat": 34.52719308774166,
+        "lon": 113.87677769714803,
+        "heading": 292,
+        "lengthFt": 11811,
+        "widthFt": 197,
+        "freq": 108500,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "ZHHH",
+        "ident": "05L",
+        "lat": 30.75766973590661,
+        "lon": 114.21080952809963,
+        "heading": 41,
+        "lengthFt": 11811,
+        "widthFt": 197,
+        "freq": 111500,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "ZHHH",
+        "ident": "23R",
+        "lat": 30.78194001510088,
+        "lon": 114.23559051210962,
+        "heading": 221,
+        "lengthFt": 11811,
+        "widthFt": 197,
+        "freq": 111500,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "ZHHH",
+        "ident": "05R",
+        "lat": 30.758228839990437,
+        "lon": 114.21638666759794,
+        "heading": 41,
+        "lengthFt": 10499,
+        "widthFt": 148,
+        "freq": 111350,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "ZHHH",
+        "ident": "23L",
+        "lat": 30.780088630059968,
+        "lon":  114.23823259212764,
+        "heading": 221,
+        "lengthFt": 10499,
+        "widthFt": 148,
+        "freq": 111100,
+        "slope": 3.0,
+        "major": true
+    }
 ]
