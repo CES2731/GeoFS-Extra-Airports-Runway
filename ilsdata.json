@@ -204,18 +204,6 @@
         "major": true
     },
     {
-        "icao": "ZSWZ",
-        "ident": "21",
-        "lat": 27.921223644816134,
-        "lon": 120.85984849598047,
-        "heading": 208.22,
-        "lengthFt": 10948,
-        "widthFt": 148,
-        "freq": 109200,
-        "slope": 3.0,
-        "major": true
-    },
-    {
         "icao": "ZSQD",
         "ident": "35",
         "lat": 36.34008576823979,
@@ -356,6 +344,18 @@
         "lengthFt": 10499,
         "widthFt": 148,
         "freq": 111100,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "ZSWZ",
+        "ident": "21",
+        "lat": 27.921223644816134,
+        "lon": 120.85984849598047,
+        "heading": 208.22,
+        "lengthFt": 10948,
+        "widthFt": 148,
+        "freq": 109200,
         "slope": 3.0,
         "major": true
     }
