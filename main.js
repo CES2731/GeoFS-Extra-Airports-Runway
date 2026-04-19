@@ -1,195 +1,214 @@
 // ==UserScript==
-// @name         GeoFS Extra Runways (Full Version)
+// @name         GeoFS-Extra-Airports-Runway
 // @namespace    http://tampermonkey.net/
-// @version      1.0
-// @description  Full integration: Physics, ILS, Markers, and Interactive Creator
+// @version      2026-04-17
+// @description  Extra-Airports-Runway
 // @author       CES2731
-// @match        https://www.geo-fs.com/geofs.php*
-// @match        https://*.geo-fs.com/geofs.php*
+// @match        https://beta.geo-fs.com/geofs.php?v=4
+// @icon         https://www.google.com/s2/favicons?sz=64&domain=geo-fs.com
 // @grant        none
 // ==/UserScript==
 
 (function() {
     'use strict';
 
-    // Guard clause for GeoFS environment
-    if (typeof geofs === 'undefined' || !geofs.cesium) {
-        console.error("❌ GeoFS not detected. Plugin failed to load.");
-        return;
+    // ==================== RUNWAYS JSON ====================
+    const RUNWAYS_JSON_URL = 'https://raw.githubusercontent.com/CES2731/GeoFS-Extra-Airports-Runway/refs/heads/main/runways.json';
+
+    // ==================== ILS JSON ====================
+    const ILS_JSON_URL = 'https://raw.githubusercontent.com/CES2731/GeoFS-Extra-Airports-Runway/refs/heads/main/ilsdata.json';
+
+    // ==================== 等待 GeoFS ====================
+    function waitGeoFS(callback) {
+        const t = setInterval(() => {
+            if (
+                typeof geofs !== 'undefined' &&
+                geofs.majorRunwayGrid &&
+                geofs.nav &&
+                geofs.map
+            ) {
+                clearInterval(t);
+                console.log("✅ GeoFS 已加载完成");
+                callback();
+            }
+        }, 1000);
     }
 
-    const CONFIG = {
-        GRID_DATA_URL: 'https://raw.githubusercontent.com/CES2731/GeoFS-Extra-Airports-Runway/refs/heads/main/runways.json',
-        NAV_DATA_URL: 'https://raw.githubusercontent.com/CES2731/GeoFS-Extra-Airports-Runway/refs/heads/main/ilsdata.json',
-        ISSUE_URL: 'https://github.com/CES2731/GeoFS-Extra-Airports-Runway/issues/new',
-        DEFAULT_WIDTH: 150
-    };
+    // =========================================================
+    // ==================== RUNWAY SYSTEM ======================
+    // =========================================================
+    function runRunwaySystem() {
 
-    const viewer = geofs.cesium.viewer;
-
-    // --- GEOSPATIAL ENGINE ---
-    const GeoEngine = {
-        getHeading: (p1, p2) => {
-            const toRad = Math.PI / 180;
-            const y = Math.sin((p2.lon - p1.lon) * toRad) * Math.cos(p2.lat * toRad);
-            const x = Math.cos(p1.lat * toRad) * Math.sin(p2.lat * toRad) -
-                      Math.sin(p1.lat * toRad) * Math.cos(p2.lat * toRad) * Math.cos((p2.lon - p1.lon) * toRad);
-            return (Math.atan2(y, x) * 180 / Math.PI + 360) % 360;
-        },
-        getDistance: (p1, p2) => {
-            const c1 = Cesium.Cartesian3.fromDegrees(p1.lon, p1.lat);
-            const c2 = Cesium.Cartesian3.fromDegrees(p2.lon, p2.lat);
-            return Cesium.Cartesian3.distance(c1, c2) * 3.28084; // Convert to Feet
-        },
-        getGridKey: (coord) => {
+        function getGridKey(coord) {
             let key = Math.trunc(coord);
-            return String(key === -0 ? 0 : key);
+            if (key === -0) key = 0;
+            return String(key);
         }
-    };
 
-    // --- CORE MANAGERS ---
-    const RunwayManager = {
-        // Adds runway to the physics engine so wheels interact with ground
-        injectToPhysics: function(icao, length, width, heading, lat, lon, elev = 0) {
-            const latKey = GeoEngine.getGridKey(lat);
-            const lonKey = GeoEngine.getGridKey(lon);
-            
-            geofs.majorRunwayGrid[latKey] = geofs.majorRunwayGrid[latKey] || {};
-            geofs.majorRunwayGrid[latKey][lonKey] = geofs.majorRunwayGrid[latKey][lonKey] || [];
-            
-            const runwayArray = [icao, Math.round(length), width, Number(heading.toFixed(2)), lat, lon, Math.round(elev)];
-            geofs.majorRunwayGrid[latKey][lonKey].push(runwayArray);
-        },
+        function findClosestRunwayGrid(lat, lon) {
+            const EARTH_RADIUS = 6371;
+            const toRad = Math.PI / 180;
+            let minDist = Infinity;
+            let targetLatKey = null, targetLonKey = null;
 
-        // Adds ILS/Radio and Map Icons
-        injectToNav: function(data) {
-            const rnwData = {
-                icao: data.icao || "CUST",
-                ident: data.ident || "00",
-                name: `${data.icao}|${data.ident || "00"}|${data.icao}`,
-                lat: parseFloat(data.lat),
-                lon: parseFloat(data.lon),
-                heading: parseFloat(data.heading),
-                lengthFeet: data.length || 10000,
-                widthFeet: data.width || 150,
-                freq: data.freq || null,
-                slope: data.slope || 3.0,
+            for (const [latKey, lonGrid] of Object.entries(geofs.majorRunwayGrid)) {
+                for (const [lonKey, runways] of Object.entries(lonGrid)) {
+                    for (const r of runways) {
+                        const rLat = r[4], rLon = r[5];
+                        if (rLat === undefined || rLon === undefined) continue;
+
+                        const dLat = (rLat - lat) * toRad;
+                        const dLon = (rLon - lon) * toRad;
+
+                        const a =
+                            Math.sin(dLat/2)**2 +
+                            Math.cos(lat*toRad)*Math.cos(rLat*toRad) *
+                            Math.sin(dLon/2)**2;
+
+                        const dist = EARTH_RADIUS * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+                        if (dist < minDist) {
+                            minDist = dist;
+                            targetLatKey = latKey;
+                            targetLonKey = lonKey;
+                        }
+                    }
+                }
+            }
+
+            return { latKey: targetLatKey, lonKey: targetLonKey };
+        }
+
+        function addRunway(icao, length, width, heading, lat, lon, elevation = 0) {
+
+            if (!icao || typeof icao !== 'string') return false;
+
+            let latKey = getGridKey(lat);
+            let lonKey = getGridKey(lon);
+
+            const nearest = findClosestRunwayGrid(lat, lon);
+            if (nearest.latKey && nearest.lonKey) {
+                latKey = nearest.latKey;
+                lonKey = nearest.lonKey;
+            }
+
+            if (!geofs.majorRunwayGrid[latKey]) geofs.majorRunwayGrid[latKey] = {};
+            if (!geofs.majorRunwayGrid[latKey][lonKey]) geofs.majorRunwayGrid[latKey][lonKey] = [];
+
+            const exists = geofs.majorRunwayGrid[latKey][lonKey]
+                .some(r => r[0] === icao && Math.abs(r[4]-lat) < 0.001);
+
+            if (exists) return false;
+
+            const runway = [icao, length, width, heading, lat, lon];
+            if (elevation !== 0) runway.push(elevation);
+
+            geofs.majorRunwayGrid[latKey][lonKey].push(runway);
+
+            console.log(`✅ ${icao}`);
+            return true;
+        }
+
+        function addBatch(runwaysArray) {
+            let success = 0;
+            for (const r of runwaysArray) {
+                if (addRunway(r[0], r[1], r[2], r[3], r[4], r[5], r[6] || 0)) {
+                    success++;
+                }
+            }
+            console.log(`📊 Runways: ${success}/${runwaysArray.length}`);
+        }
+
+        function parseAndAdd(data) {
+            let runwaysArray = [];
+
+            if (Array.isArray(data)) {
+                if (Array.isArray(data[0])) {
+                    runwaysArray = data;
+                } else {
+                    runwaysArray = data.map(i =>
+                        [i.icao, i.length, i.width, i.heading, i.lat, i.lon, i.elevation || 0]
+                    );
+                }
+            } else if (data.runways) {
+                runwaysArray = data.runways.map(i =>
+                    [i.icao, i.length, i.width, i.heading, i.lat, i.lon, i.elevation || 0]
+                );
+            }
+
+            addBatch(runwaysArray);
+        }
+
+        fetch(RUNWAYS_JSON_URL)
+            .then(r => r.json())
+            .then(json => {
+                parseAndAdd(json);
+                console.log("🎉 Runways loaded");
+            });
+    }
+
+    // =========================================================
+    // ==================== ILS SYSTEM =========================
+    // =========================================================
+    function runILSSystem() {
+
+        function addCustomRunway(options) {
+
+            const base = {
+                icao: options.icao,
+                ident: options.ident,
+                name: `${options.icao}|${options.ident}|${options.icao}`,
+                lat: parseFloat(options.lat),
+                lon: parseFloat(options.lon),
+                heading: parseFloat(options.heading),
+                lengthFeet: options.lengthFt || 10000,
+                widthFeet: options.widthFt || 150,
+                major: options.major !== false,
+                freq: options.freq,
+                slope: options.slope || 3.0,
                 type: 'RNW'
             };
 
-            const addedNav = geofs.nav.addNavaid(rnwData);
+            const addedNav = geofs.nav.addNavaid(Object.assign({}, base));
 
-            // Handle Map Marker
-            if (geofs.map && geofs.map.addRunwayMarker) {
-                if (addedNav.marker) addedNav.marker.destroy();
-                addedNav.marker = geofs.map.addRunwayMarker(rnwData);
-            }
+            if (options.freq) {
 
-            // Handle ILS Station
-            if (data.freq) {
-                const ilsData = { ...rnwData, ident: rnwData.ident + 'X', name: rnwData.icao + ' ILS', type: 'ILS' };
-                const addedILS = geofs.nav.addNavaid(ilsData);
-                geofs.nav.frequencies[data.freq] = geofs.nav.frequencies[data.freq] || [];
-                geofs.nav.frequencies[data.freq].push(addedILS);
-            }
-        },
-
-        // Visual 3D Surface
-        render3D: function(icao, p1, p2, width, altM) {
-            return viewer.entities.add({
-                name: `RWY_FULL_${icao}`,
-                corridor: {
-                    positions: Cesium.Cartesian3.fromDegreesArray([p1.lon, p1.lat, p2.lon, p2.lat]),
-                    width: width * 0.3048,
-                    height: altM,
-                    extrudedHeight: altM - 1.2,
-                    material: Cesium.Color.fromCssColorString('#111111').withAlpha(0.95),
-                    outline: true,
-                    outlineColor: Cesium.Color.WHITE
-                }
-            });
-        }
-    };
-
-    // --- INTERACTIVE TOOL ---
-    window.geofsRunwayTool = {
-        create: function(icao, ident, freq, width = CONFIG.DEFAULT_WIDTH) {
-            console.log(`%c[CREATION MODE] Click the START and END center points of the runway for ${icao}`, "color: yellow; font-weight: bold;");
-            let points = [];
-            const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
-
-            handler.setInputAction((click) => {
-                const ray = viewer.camera.getPickRay(click.position);
-                const cartesian = viewer.scene.globe.pick(ray, viewer.scene);
-
-                if (cartesian) {
-                    const carto = Cesium.Cartographic.fromCartesian(cartesian);
-                    points.push({ lat: Cesium.Math.toDegrees(carto.latitude), lon: Cesium.Math.toDegrees(carto.longitude) });
-                    console.log(`📍 Point ${points.length} confirmed.`);
-
-                    if (points.length === 2) {
-                        const length = GeoEngine.getDistance(points[0], points[1]);
-                        const heading = GeoEngine.getHeading(points[0], points[1]);
-                        const altM = geofs.aircraft.instance.llaLocation[2];
-                        
-                        const runwayObj = {
-                            icao, ident, 
-                            length: Math.round(length), 
-                            width, 
-                            heading: Number(heading.toFixed(2)), 
-                            lat: Number(((points[0].lat + points[1].lat) / 2).toFixed(6)), 
-                            lon: Number(((points[0].lon + points[1].lon) / 2).toFixed(6)), 
-                            elevation: Math.round(altM * 3.2808), 
-                            freq: freq || null
-                        };
-
-                        // Immediate Preview
-                        RunwayManager.render3D(icao, points[0], points[1], width, altM);
-                        RunwayManager.injectToPhysics(runwayObj.icao, runwayObj.length, runwayObj.width, runwayObj.heading, runwayObj.lat, runwayObj.lon, runwayObj.elevation);
-                        RunwayManager.injectToNav(runwayObj);
-
-                        // Clipboard and Submission
-                        const jsonStr = JSON.stringify(runwayObj, null, 2);
-                        const textarea = document.createElement("textarea");
-                        textarea.value = jsonStr; document.body.appendChild(textarea);
-                        textarea.select(); document.execCommand('copy');
-                        document.body.removeChild(textarea);
-
-                        console.log("JSON Generated:", jsonStr);
-                        if (confirm(`Runway ${icao} created! Data copied to clipboard.\n\nWould you like to open GitHub to submit this for review?`)) {
-                            window.open(`${CONFIG.ISSUE_URL}?title=[Submission] ${icao}&body=${encodeURIComponent("Please paste the JSON below:\n\n```json\n" + jsonStr + "\n```")}`, '_blank');
-                        }
-                        handler.destroy();
-                    }
-                }
-            }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
-        },
-
-        syncData: async function() {
-            console.log("☁️ Synchronizing runway and navigation databases...");
-            try {
-                // Fetch Physics Data
-                const resGrid = await fetch(CONFIG.GRID_DATA_URL);
-                const gridJSON = await resGrid.json();
-                const gridList = Array.isArray(gridJSON) ? gridJSON : (gridJSON.runways || []);
-                gridList.forEach(r => {
-                    if (Array.isArray(r)) RunwayManager.injectToPhysics(...r);
-                    else RunwayManager.injectToPhysics(r.icao, r.length, r.width, r.heading, r.lat, r.lon, r.elevation || 0);
+                const ilsData = Object.assign({}, base, {
+                    type: 'ILS',
+                    ident: options.ident + 'X'
                 });
 
-                // Fetch Nav/ILS Data
-                const resNav = await fetch(CONFIG.NAV_DATA_URL);
-                const navJSON = await resNav.json();
-                navJSON.forEach(n => RunwayManager.injectToNav(n));
+                const addedILS = geofs.nav.addNavaid(ilsData);
 
-                if (geofs.api.map && geofs.api.map.updateMarkerLayers) geofs.api.map.updateMarkerLayers();
-                console.log(`✅ Sync Complete: ${gridList.length} Runways and ${navJSON.length} Nav stations loaded.`);
-            } catch (error) {
-                console.error("❌ Sync Error:", error);
+                if (!geofs.nav.frequencies[options.freq]) {
+                    geofs.nav.frequencies[options.freq] = [];
+                }
+
+                geofs.nav.frequencies[options.freq].push(addedILS);
+            }
+
+            if (geofs.map?.addRunwayMarker) {
+                if (addedNav.marker) addedNav.marker.destroy();
+                geofs.map.addRunwayMarker(base);
+            }
+
+            if (geofs.api?.map?.updateMarkerLayers) {
+                geofs.api.map.updateMarkerLayers();
             }
         }
-    };
 
-    // Execute Sync on startup
-    window.geofsRunwayTool.syncData();
+        fetch(ILS_JSON_URL)
+            .then(r => r.json())
+            .then(data => {
+                data.forEach(addCustomRunway);
+                console.log("🎉 ILS loaded");
+            });
+    }
+
+    // ==================== START ====================
+    waitGeoFS(() => {
+        runRunwaySystem();
+        runILSSystem();
+    });
+
 })();
