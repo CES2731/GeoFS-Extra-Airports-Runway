@@ -35,7 +35,7 @@ Discord:MU2731 QQ:1830524785@qq.com
 
 
 ## Runway List
-- list
+
 - ZGSZ RWY16L/34R
 - ZJHK RWY10/28
 - ZGGG RWY02R/20L RWY01L/19R 03/21
