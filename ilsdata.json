@@ -358,5 +358,29 @@
         "freq": 109200,
         "slope": 3.0,
         "major": true
+    },
+    {
+        "icao": "ZUGY",
+        "ident": "01R",
+        "lat": 26.523404167113632,
+        "lon": 106.80200279961477,
+        "heading": 10,
+        "lengthFt": 13123,
+        "widthFt": 148,
+        "freq": 111550,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "ZUGY",
+        "ident": "19L",
+        "lat": 26.557037561700295,
+        "lon": 106.80854296823344,
+        "heading": 190,
+        "lengthFt": 13123,
+        "widthFt": 148,
+        "freq": 111350,
+        "slope": 3.0,
+        "major": true
     }
 ]
