@@ -2,7 +2,7 @@
 // @name         Extra Airport Runways
 // @namespace    http://tampermonkey.net/
 // @version      2026-04-18
-// @description  Extra Runways with Custom UI
+// @description  Extra Runways
 // @author       CES2731
 // @match        https://www.geo-fs.com/geofs.php*
 // @match        https://*.geo-fs.com/geofs.php*
@@ -13,13 +13,11 @@
 (function() {
     'use strict';
 
-    // ==================== CONFIGURATION ====================
     const CONFIG = {
         GRID_DATA_URL: 'https://raw.githubusercontent.com/CES2731/GeoFS-Extra-Airports-Runway/refs/heads/main/runways.json',
         ILS_DATA_URL: 'https://raw.githubusercontent.com/CES2731/GeoFS-Extra-Airports-Runway/refs/heads/main/ilsdata.json'
     };
 
-    // ==================== UI NOTIFICATION SYSTEM ====================
     function injectStyles() {
         if (document.getElementById('geofs-extra-runway-style')) return;
         const style = document.createElement('style');
@@ -98,7 +96,6 @@
         }, 3000);
     }
 
-    // ==================== CORE LOGIC ====================
     if (typeof geofs === 'undefined') {
         triggerUINotification('ERROR', 'GeoFS NOT LOADED');
         console.error('GeoFS is undefined. Script halted.');
@@ -295,7 +292,6 @@
         }
     }
 
-    // ==================== EXECUTION ====================
     (async function main() {
         console.log('Extra Runways Plugin Starting...');
         if (CONFIG.GRID_DATA_URL) await loadGridData(CONFIG.GRID_DATA_URL);
