@@ -538,5 +538,29 @@
         "freq": 111350,
         "slope": 3.0,
         "major": true
+    },
+    {
+        "icao": "ZSNJ",
+        "ident": "07",
+        "lat": 31.713515209502024,
+        "lon": 118.84820776980614,
+        "heading": 58,
+        "lengthFt": 11811,
+        "widthFt": 196,
+        "freq": 111300,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "ZSNJ",
+        "ident": "25",
+        "lat": 31.730696930202985,
+        "lon": 118.88027089253004,
+        "heading": 238,
+        "lengthFt": 11811,
+        "widthFt": 196,
+        "freq": 108700,
+        "slope": 3.0,
+        "major": true
     }
 ]
