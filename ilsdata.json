@@ -466,5 +466,29 @@
         "freq": 108500,
         "slope": 3.0,
         "major": true
+    },
+    {
+        "icao": "ZUCK",
+        "ident": "03R",
+        "lat": 29.720908303431617,
+        "lon": 106.66792952383928,
+        "heading": 17,
+        "lengthFt": 11155,
+        "widthFt": 148,
+        "freq": 108750,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "ZUCK",
+        "ident": "21L",
+        "lat": 29.74864146174932,
+        "lon": 106.67745644536872,
+        "heading": 197,
+        "lengthFt": 11155,
+        "widthFt": 148,
+        "freq": 108750,
+        "slope": 3.0,
+        "major": true
     }
 ]
