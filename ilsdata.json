@@ -562,5 +562,29 @@
         "freq": 108700,
         "slope": 3.0,
         "major": true
+    },
+    {
+        "icao": "ZSHC",
+        "ident": "07",
+        "lat": 30.222129044194876,
+        "lon": 120.41775797982193,
+        "heading": 62.95,
+        "lengthFt": 11811,
+        "widthFt": 148,
+        "freq": 108500,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "ZSHC",
+        "ident": "25",
+        "lat": 30.23689514257123,
+        "lon": 120.4510559960017,
+        "heading": 242.95,
+        "lengthFt": 11811,
+        "widthFt": 148,
+        "freq": 110350,
+        "slope": 3.0,
+        "major": true
     }
 ]
