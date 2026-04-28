@@ -634,5 +634,53 @@
         "freq": 109550,
         "slope": 3.0,
         "major": true
+    },
+    {
+        "icao": "ZHEC",
+        "ident": "01L",
+        "lat": 30.326935380090145,
+        "lon": 115.0263811357639,
+        "heading": 10,
+        "lengthFt": 11811,
+        "widthFt": 147,
+        "freq": 111300,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "ZHEC",
+        "ident": "19R",
+        "lat": 30.358779257600336,
+        "lon": 115.03285944540374,
+        "heading": 190,
+        "lengthFt": 11811,
+        "widthFt": 147,
+        "freq": 111300,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "ZHEC",
+        "ident": "01R",
+        "lat": 30.322162804607498,
+        "lon": 115.04547473176719,
+        "heading": 10,
+        "lengthFt": 11811,
+        "widthFt": 147,
+        "freq": 108950,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "ZHEC",
+        "ident": "19L",
+        "lat": 30.354019834458313,
+        "lon": 115.05196697791834,
+        "heading": 190,
+        "lengthFt": 11811,
+        "widthFt": 147,
+        "freq": 108950,
+        "slope": 3.0,
+        "major": true
     }
 ]
