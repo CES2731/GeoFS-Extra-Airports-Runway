@@ -730,5 +730,29 @@
         "freq": 111100,
         "slope": 3.0,
         "major": true
+    },
+    {
+        "icao": "VNPR",
+        "ident": "12",
+        "lat": 28.18866554142117,
+        "lon": 84.0034425761937,
+        "heading": 115.3,
+        "lengthFt": 8202,
+        "widthFt": 197,
+        "freq": 125200,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "VNPR",
+        "ident": "30",
+        "lat": 28.178991900486345,
+        "lon": 84.02642990913574,
+        "heading": 295.3,
+        "lengthFt": 8202,
+        "widthFt": 197,
+        "freq": 125200,
+        "slope": 3.0,
+        "major": true
     }
 ]

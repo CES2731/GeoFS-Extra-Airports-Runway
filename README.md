@@ -46,6 +46,7 @@ Discord:MU2731 QQ:1830524785@qq.com
 * ZGZJ RWY15/33 (**Zhanjiang Wuchuan**)
 * ZHEC RWY01L/19R RWY01R/19L
 * ZWWW RWY08L/26R RWY08R/26L
+* VNPR RWY12/30
 
 </details>
 
