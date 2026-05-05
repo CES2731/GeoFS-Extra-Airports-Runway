@@ -2,7 +2,7 @@
 
 ## How to use
 
-1.Copy the **main.js** and paste it into the **browser console** or **Tampermonkey**
+1.Copy the **main.js** and paste it into the **browser console** or **Tampermonkey** (Recommend to import the console)
 
 2.Reload the terrain (**not the game!**) ,you can choose anouther airport far away from which airport you currently at,and then change back
 
