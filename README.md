@@ -48,6 +48,8 @@ Discord:MU2731 QQ:1830524785@qq.com
 * ZWWW RWY08L/26R RWY08R/26L
 * VNPR RWY12/30
 * ZPLJ RWY02/20
+* ZUWS RWY06/24
+* ZBNY RWY18/36 (**Beijing Nanyuan,now closed**)
 
 </details>
 
