@@ -754,5 +754,29 @@
         "freq": 125200,
         "slope": 3.0,
         "major": true
+    },
+    {
+        "icao": "ZPLJ",
+        "ident": "02",
+        "lat": 26.66410576823084,
+        "lon": 100.2403739260159,
+        "heading": 17,
+        "lengthFt": 9842,
+        "widthFt": 148,
+        "freq": 108500,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "ZPLJ",
+        "ident": "20",
+        "lat": 26.689994311984954,
+        "lon": 100.24916095722135,
+        "heading": 197,
+        "lengthFt": 9842,
+        "widthFt": 148,
+        "freq": 109700,
+        "slope": 3.0,
+        "major": true
     }
 ]
