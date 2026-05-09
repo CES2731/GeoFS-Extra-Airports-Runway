@@ -778,5 +778,29 @@
         "freq": 109700,
         "slope": 3.0,
         "major": true
+    },
+    {
+        "icao": "ZUWS",
+        "ident": "06",
+        "lat": 31.061892605880196,
+        "lon": 109.69836840478007,
+        "heading": 53,
+        "lengthFt": 8530,
+        "widthFt": 148,
+        "freq": 108550,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "ZUWS",
+        "ident": "24",
+        "lat": 31.075956706142975,
+        "lon": 109.72010461662643,
+        "heading": 233,
+        "lengthFt": 8530,
+        "widthFt": 148,
+        "freq": 112150,
+        "slope": 3.0,
+        "major": true
     }
 ]
