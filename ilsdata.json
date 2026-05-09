@@ -874,5 +874,29 @@
         "freq": null,
         "slope": 3.0,
         "major": true
+    },
+    {
+        "icao": "ZYHB",
+        "ident": "05R",
+        "lat": 45.57739845536801,
+        "lon": 126.20889573664861,
+        "heading": 39.43,
+        "lengthFt": 11811,
+        "widthFt": 148,
+        "freq": 110700,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "ZYHB",
+        "ident": "23L",
+        "lat": 45.60249843358931,
+        "lon": 126.2383020629919,
+        "heading": 219.43,
+        "lengthFt": 11811,
+        "widthFt": 148,
+        "freq": 111100,
+        "slope": 3.0,
+        "major": true
     }
 ]
