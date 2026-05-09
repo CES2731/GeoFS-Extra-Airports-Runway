@@ -802,5 +802,29 @@
         "freq": 112150,
         "slope": 3.0,
         "major": true
+    },
+    {
+        "icao": "ZBNY",
+        "ident": "36",
+        "lat": 39.76648888888889,
+        "lon": 116.38748055555556,
+        "heading": 356.6,
+        "lengthFt": 9506,
+        "widthFt": 161,
+        "freq": null,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "ZBNY",
+        "ident": "18",
+        "lat": 39.79253887642818,
+        "lon": 116.38559733877544,
+        "heading": 176.6,
+        "lengthFt": 9506,
+        "widthFt": 161,
+        "freq": null,
+        "slope": 3.0,
+        "major": true
     }
 ]
