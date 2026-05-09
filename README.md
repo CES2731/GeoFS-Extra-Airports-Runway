@@ -50,6 +50,7 @@ Discord:MU2731 QQ:1830524785@qq.com
 * ZPLJ RWY02/20
 * ZUWS RWY06/24
 * ZBNY RWY18/36 (**Beijing Nanyuan,now closed**)
+* ZSJX RWY05/23 RWY12/20
 
 </details>
 
