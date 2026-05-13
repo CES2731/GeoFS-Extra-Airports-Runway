@@ -898,5 +898,29 @@
         "freq": 111100,
         "slope": 3.0,
         "major": true
+    },
+    {
+        "icao": "ZSYN",
+        "ident": "04",
+        "lat": 33.41846556387794,
+        "lon": 120.1958459934797,
+        "heading": 38,
+        "lengthFt": 9186,
+        "widthFt": 164,
+        "freq": 110900,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "ZSYN",
+        "ident": "22",
+        "lat": 33.438203727245124,
+        "lon": 120.2146071087413,
+        "heading": 218,
+        "lengthFt": 9186,
+        "widthFt": 164,
+        "freq": 111300,
+        "slope": 3.0,
+        "major": true
     }
 ]
