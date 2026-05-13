@@ -922,5 +922,29 @@
         "freq": 111300,
         "slope": 3.0,
         "major": true
+    },
+    {
+        "icao": "ZGBH",
+        "ident": "01",
+        "lat": 21.52538573731949,
+        "lon": 109.29080691903353,
+        "heading": 10.1,
+        "lengthFt": 10498,
+        "widthFt": 148,
+        "freq": 110700,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "ZGBH",
+        "ident": "19",
+        "lat": 21.5537255399508,
+        "lon": 109.29680655165261,
+        "heading": 190.1,
+        "lengthFt": 10498,
+        "widthFt": 148,
+        "freq": null,
+        "slope": 3.0,
+        "major": true
     }
 ]
