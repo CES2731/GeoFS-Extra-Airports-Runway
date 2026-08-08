@@ -1042,5 +1042,29 @@
         "freq": null,
         "slope": 3.0,
         "major": true
+    },
+    {
+        "icao": "ZSWF",
+        "ident": "35",
+        "lat": 36.6356038330096,
+        "lon": 119.12273613453802,
+        "heading": 343.9,
+        "lengthFt": 8553.6,
+        "widthFt": 157,
+        "freq": null,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "ZSWF",
+        "ident": "17",
+        "lat": 36.65811344258768,
+        "lon": 119.11463654293391,
+        "heading": 163.9,
+        "lengthFt": 8553.6,
+        "widthFt": 157,
+        "freq": null,
+        "slope": 3.0,
+        "major": true
     }
 ]

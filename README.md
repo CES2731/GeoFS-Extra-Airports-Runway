@@ -56,6 +56,8 @@ the new added runways have **usable PAPI light** ,**usebale ILS** , **Tp point o
 * ZSYN RWY04/22
 * ZGBH RWY01/19
 * ZUTR RWY04/22
+* ZSPD RWY15/33
+* ZSWF RWY17/35
 
 </details>
 
