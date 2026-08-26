@@ -1049,7 +1049,7 @@
         "lat": 36.6356038330096,
         "lon": 119.12273613453802,
         "heading": 343.9,
-        "lengthFt": 8553.6,
+        "lengthFt": 8554,
         "widthFt": 157,
         "freq": null,
         "slope": 3.0,
@@ -1061,9 +1061,33 @@
         "lat": 36.65811344258768,
         "lon": 119.11463654293391,
         "heading": 163.9,
-        "lengthFt": 8553.6,
+        "lengthFt": 8554,
         "widthFt": 157,
         "freq": null,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "ZLDH",
+        "ident": "08",
+        "lat": 40.16039991327569,
+        "lon": 94.7927092633778,
+        "heading": 84.16,
+        "lengthFt": 11155,
+        "widthFt": 148,
+        "freq": 109300,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "ZLDH",
+        "ident": "26",
+        "lat": 40.163516014075945,
+        "lon": 94.83234194122714,
+        "heading": 264.16,
+        "lengthFt": 11155,
+        "widthFt": 148,
+        "freq": 109300,
         "slope": 3.0,
         "major": true
     }
