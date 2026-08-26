@@ -1066,29 +1066,5 @@
         "freq": null,
         "slope": 3.0,
         "major": true
-    },
-    {
-        "icao": "ZLDH",
-        "ident": "08",
-        "lat": 40,
-        "lon": 94,
-        "heading": 84.16,
-        "lengthFt": 11155,
-        "widthFt": 148,
-        "freq": 109300,
-        "slope": 3.0,
-        "major": true
-    },
-    {
-        "icao": "ZLDH",
-        "ident": "26",
-        "lat": 40.163516014075945,
-        "lon": 94.83234194122714,
-        "heading": 264.16,
-        "lengthFt": 11155,
-        "widthFt": 148,
-        "freq": 109300,
-        "slope": 3.0,
-        "major": true
     }
 ]
