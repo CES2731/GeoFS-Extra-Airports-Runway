@@ -1,4 +1,4 @@
-# GeoFS Extra Airports Runway / Addon GeoFS额外跑道插件
+# GeoFS Extra Airports Runway Addon / GeoFS额外跑道插件
 
 ## How to use
 
