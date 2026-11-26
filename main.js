@@ -3,7 +3,7 @@
 // @namespace    http://tampermonkey.net/
 // @version      2026-11-26
 // @description  Extra Runways (Optimized, compatible with the 2026-11 GeoFS map update)
-// @author       CES2731/Deepseek
+// @author       CES2731/Deepseek Harness
 // @match        https://www.geo-fs.com/geofs.php*
 // @match        https://*.geo-fs.com/geofs.php*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=geo-fs.com
