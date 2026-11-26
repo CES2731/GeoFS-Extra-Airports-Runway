@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Extra Airport Runways
 // @namespace    http://tampermonkey.net/
-// @version      2026-04-18
-// @description  Extra Runways (Optimized)
+// @version      2026-11-26
+// @description  Extra Runways (Optimized, compatible with the 2026-11 GeoFS map update)
 // @author       CES2731/Deepseek
 // @match        https://www.geo-fs.com/geofs.php*
 // @match        https://*.geo-fs.com/geofs.php*
@@ -37,6 +37,112 @@
             )
         ]);
     };
+
+    // ---------- GeoFS 新版地图 API 兼容层 ----------
+    // 2026-11 的地图 UI 更新后，跑道的显示方式改成了“先注册、再按瓦片渲染”：
+    //   1. 必须调用 geofs.map.addRunwayMarker(runway) 把跑道写进 major / minor 图层的数据表；
+    //   2. 只有 geofs.api.map.updateMarkerLayers() 命中可见瓦片时，才会真正生成 Leaflet 标记；
+    //   3. 地图标记不再从 geofs.majorRunwayGrid 自动生成 —— 只往网格里塞数据，地图上不会出现任何东西。
+    // 另外新版 geofs.nav.addNavaid() 自己会顺手创建 navaid 图标标记，并写入 frequencies。
+    // 同时 GeoFS 的脚本是延迟加载的，插件常常比 geofs.map / geofs.majorRunwayGrid 更早执行，
+    // 所以这里统一做“等 API 就绪 → 再注册”，避免静默失败。
+    const pendingMapTasks = [];
+
+    function waitFor(predicate, timeout, timeoutMessage) {
+        let ok = false;
+        try { ok = !!predicate(); } catch (err) { ok = false; }
+        if (ok) return Promise.resolve(true);
+        return new Promise(resolve => {
+            const start = Date.now();
+            const timer = setInterval(() => {
+                let ready = false;
+                try { ready = !!predicate(); } catch (err) { ready = false; }
+                if (ready) {
+                    clearInterval(timer);
+                    resolve(true);
+                } else if (Date.now() - start >= timeout) {
+                    clearInterval(timer);
+                    if (timeoutMessage) console.warn(timeoutMessage);
+                    resolve(false);
+                }
+            }, 1000);
+        });
+    }
+
+    const isRunwayGridReady = () => !!(geofs && geofs.majorRunwayGrid);
+    const isMapApiReady = () => !!(
+        geofs &&
+        geofs.nav && typeof geofs.nav.addNavaid === 'function' &&
+        geofs.map && typeof geofs.map.addRunwayMarker === 'function' &&
+        geofs.api && geofs.api.map && geofs.api.map.markerLayers && geofs.api.map._map
+    );
+
+    // 地图 API 就绪前先排队，就绪后再执行；已就绪则立即执行
+    function runWhenMapReady(task) {
+        if (isMapApiReady()) {
+            try {
+                return task();
+            } catch (err) {
+                console.warn('⚠️ 地图注册任务失败:', err);
+                return null;
+            }
+        }
+        pendingMapTasks.push(task);
+        return null;
+    }
+
+    async function flushMapTasks(timeout = 300000) {
+        if (!pendingMapTasks.length) return 0;
+        const ready = await waitFor(isMapApiReady, timeout, '⏳ 等待 GeoFS 地图 API 超时，跑道暂时不会显示在地图上');
+        if (!ready) return 0;
+        const tasks = pendingMapTasks.splice(0, pendingMapTasks.length);
+        let count = 0;
+        for (const task of tasks) {
+            try {
+                task();
+                count++;
+            } catch (err) {
+                console.warn('⚠️ 地图注册任务失败:', err);
+            }
+        }
+        console.log(`🗺️ 地图图层注册完成：${count} / ${tasks.length}`);
+        return count;
+    }
+
+    // 新版跑道弹窗按 "跑道号|名称|ICAO" 解析名称，第 3 段用于查询塔台/ATIS 频率
+    function makeRunwayName(ident, icao) {
+        return `${ident}|${icao}|${icao}`;
+    }
+
+    function registerRunwayNow(runwayData) {
+        let addedNav = null;
+        try {
+            addedNav = geofs.nav.addNavaid(runwayData);
+        } catch (err) {
+            console.warn('⚠️ 跑道导航数据注册失败:', runwayData.name, err);
+            return null;
+        }
+        // 新版 addNavaid 可能会顺手创建一个图标标记（RNW 类型没有图标，返回 undefined）
+        if (addedNav && addedNav.marker && typeof addedNav.marker.destroy === 'function') {
+            addedNav.marker.destroy();
+            addedNav.marker = null;
+        }
+        try {
+            geofs.map.addRunwayMarker(runwayData);
+        } catch (err) {
+            console.warn('⚠️ 跑道地图标记注册失败:', runwayData.name, err);
+        }
+        return addedNav;
+    }
+
+    function registerRunwayOnMap(runwayData) {
+        if (!isMapApiReady()) {
+            // 地图 API 尚未初始化：先排队，等就绪后统一注册（返回跑道对象表示已受理）
+            pendingMapTasks.push(() => registerRunwayNow(runwayData));
+            return runwayData;
+        }
+        return registerRunwayNow(runwayData);
+    }
 
     // ---------- 第一部分：跑道网格数据加载 ----------
     function getGridKey(coord) {
@@ -94,10 +200,42 @@
         return true;
     }
 
+    // 网格里的首项通常形如 "ZGSZ16L34R"（ICAO + 跑道编号），拆开才能填进新版跑道标记
+    function splitGridName(name) {
+        const text = String(name == null ? '' : name).toUpperCase().replace(/[^A-Z0-9]/g, '');
+        const match = text.match(/^([A-Z0-9]{4})(.+)$/);
+        if (match && match[2]) return { icao: match[1], ident: match[2] };
+        return { icao: text || 'CUST', ident: text || '00' };
+    }
+
+    // 把网格跑道同步注册到新版地图图层（否则 3D 跑道有了，地图上却没有标记）
+    function registerGridRunwayOnMap(runwayRecord) {
+        const [name, length, width, heading, lat, lon] = runwayRecord;
+        const { icao, ident } = splitGridName(name);
+        registerRunwayOnMap({
+            id: null,
+            icao: icao,
+            ident: ident,
+            name: makeRunwayName(ident, icao),
+            lat: lat,
+            lon: lon,
+            heading: heading,
+            lengthFeet: length,
+            widthFeet: width,
+            major: true,
+            freq: undefined,
+            slope: 3.0,
+            type: 'RNW'
+        });
+    }
+
     function addBatchToGrid(runwaysArray) {
         let success = 0;
         for (const r of runwaysArray) {
-            if (addRunwayToGrid(r[0], r[1], r[2], r[3], r[4], r[5], r[6] || 0)) success++;
+            if (addRunwayToGrid(r[0], r[1], r[2], r[3], r[4], r[5], r[6] || 0)) {
+                success++;
+                registerGridRunwayOnMap(r);
+            }
         }
         console.log(`📊 [网格] 成功添加 ${success} / ${runwaysArray.length} 条跑道`);
         return success;
@@ -132,7 +270,7 @@
         if (!url) return;
         console.log(`🗺️ 正在加载跑道网格数据: ${url}`);
         try {
-            const response = await fetchWithTimeout(url);
+            const response = await fetchWithTimeout(url, 30000);
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             const json = await response.json();
             const added = parseAndAddToGrid(json);
@@ -143,9 +281,15 @@
     }
 
     // ---------- 第二部分：ILS/RNW 导航及地图标记加载（优化分批处理） ----------
+    const registeredKeys = new Set();
+
+    function runwayKey(icao, ident, lat, lon) {
+        return [icao, ident, Number(lat).toFixed(4), Number(lon).toFixed(4)].join('|');
+    }
+
     function addCustomRunway(options) {
-        const icao = options.icao || 'CUST';
-        const ident = options.ident || '00';
+        const icao = String(options.icao || 'CUST').toUpperCase();
+        const ident = String(options.ident || '00').toUpperCase();
         const lat = parseFloat(options.lat);
         const lon = parseFloat(options.lon);
         const heading = parseFloat(options.heading);
@@ -160,33 +304,28 @@
             return null;
         }
 
+        const key = runwayKey(icao, ident, lat, lon);
+        if (registeredKeys.has(key)) return null;
+        registeredKeys.add(key);
+
         const runwayData = {
             id: null,
             icao: icao,
             ident: ident,
-            name: `${icao}|${ident}|${icao}`,
+            name: makeRunwayName(ident, icao),
             lat: lat,
             lon: lon,
             heading: heading,
             lengthFeet: lengthFt,
             widthFeet: widthFt,
             major: major,
-            freq: freq,
+            freq: freq || undefined,
             slope: slope,
             type: 'RNW'
         };
 
-        const addedNav = geofs.nav.addNavaid(Object.assign({}, runwayData));
-        runwayData.id = addedNav.id;
-
-        if (geofs.map && typeof geofs.map.addRunwayMarker === 'function') {
-            if (addedNav.marker) {
-                addedNav.marker.destroy();
-            }
-            const marker = geofs.map.addRunwayMarker(runwayData);
-            addedNav.marker = marker;
-            // 日志改为调试级别，避免刷屏（保留少量）
-        }
+        // 新版：导航数据与地图标记必须一起注册，否则地图上不会出现跑道
+        const addedNav = registerRunwayOnMap(runwayData);
 
         if (freq) {
             const ilsData = {
@@ -200,12 +339,14 @@
                 slope: slope,
                 type: 'ILS'
             };
-            const addedILS = geofs.nav.addNavaid(ilsData);
-            if (!geofs.nav.frequencies[freq]) {
-                geofs.nav.frequencies[freq] = [];
-            }
-            geofs.nav.frequencies[freq].push(addedILS);
-            // 日志精简
+            // 新版 addNavaid 会自动把 ILS 写进 geofs.nav.frequencies，这里不再手动 push
+            runWhenMapReady(() => {
+                try {
+                    geofs.nav.addNavaid(ilsData);
+                } catch (err) {
+                    console.warn('⚠️ ILS 导航数据注册失败:', ilsData.name, err);
+                }
+            });
         }
 
         return addedNav;
@@ -233,7 +374,7 @@
     async function loadILSData(url) {
         console.log(`🚀 正在加载 ILS/RNW 数据: ${url}`);
         try {
-            const response = await fetchWithTimeout(url);
+            const response = await fetchWithTimeout(url, 30000);
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             const data = await response.json();
 
@@ -258,8 +399,11 @@
     // 刷新地图（优化版：只触发一次刷新）
     function refreshMap() {
         // 优先使用官方 API
-        if (geofs.api && geofs.api.map && typeof geofs.api.map.updateMarkerLayers === 'function') {
+        if (geofs.api && geofs.api.map && geofs.api.map._map && typeof geofs.api.map.updateMarkerLayers === 'function') {
             geofs.api.map.updateMarkerLayers();
+            if (geofs.map && typeof geofs.map.resize === 'function' && geofs.map.mapActive) {
+                geofs.map.resize();
+            }
             console.log('🔄 已调用地图标记更新 API');
             return;
         }
@@ -281,11 +425,21 @@
         console.log('🔧 合并插件启动（优化版），配置:', CONFIG);
 
         try {
-            // 并行加载两个数据源
-            const gridPromise = CONFIG.GRID_DATA_URL ? loadGridData(CONFIG.GRID_DATA_URL) : Promise.resolve();
-            const ilsPromise = CONFIG.ILS_DATA_URL ? loadILSData(CONFIG.ILS_DATA_URL) : Promise.resolve();
+            // 网格数据必须等 geofs.majorRunwayGrid 就绪（GeoFS 的脚本是延迟加载的）
+            const gridPromise = (async () => {
+                if (!CONFIG.GRID_DATA_URL) return;
+                const ready = await waitFor(isRunwayGridReady, 300000, '⏳ 等待 GeoFS 跑道网格超时，跳过网格数据');
+                if (!ready) return;
+                await loadGridData(CONFIG.GRID_DATA_URL);
+            })();
 
-            await Promise.all([gridPromise, ilsPromise]);
+            // 并行加载所有 ILS 数据源
+            const ilsPromises = (CONFIG.ILS_DATA_URLS || []).map(url => loadILSData(url));
+
+            await Promise.all([gridPromise, ...ilsPromises]);
+
+            // 地图 API 尚未就绪时，这里会把排队的跑道统一注册到新版地图图层
+            await flushMapTasks();
 
             // 所有加载完成后统一刷新地图
             refreshMap();
