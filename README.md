@@ -15,7 +15,7 @@
 
 ## About this addon
 
-Addon created with help of Deepseek
+Addon created with help of Deepseek Harness
 
 This addon add some runways which were missing in GeoFS's runways database,
 
