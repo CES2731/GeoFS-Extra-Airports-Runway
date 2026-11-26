@@ -1,5 +1,7 @@
 # GeoFS Extra Airports Runway Addon / GeoFS额外跑道插件
 
+## Now compatible with the latest game version(Geo4.0 ATC Update)!!
+
 ## How to use
 
 1.Copy the **main.js** and paste it into the **browser console** or **Tampermonkey** (Recommend to import the console)
@@ -58,6 +60,7 @@ the new added runways have **usable PAPI light** ,**usebale ILS** , **Tp point o
 * ZUTR RWY04/22
 * ZSPD RWY15/33
 * ZSWF RWY17/35
+* ZBHH RWY07/25 RWY08/26 (**Hohhot Shengle Int.**)
 
 </details>
 
@@ -67,8 +70,12 @@ the new added runways have **usable PAPI light** ,**usebale ILS** , **Tp point o
 
 ### Before
 
-<img width="1311" height="1323" alt="屏幕截图 2026-04-16 233241" src="https://github.com/user-attachments/assets/1e9401a7-3cc6-43ea-81a9-5639841551c7" />
+<img width="2620" height="1382" alt="image" src="https://github.com/user-attachments/assets/b356a488-ce1a-4f09-823e-26e84bec425f" />
+<img width="512" height="568" alt="image" src="https://github.com/user-attachments/assets/dd20a3d8-93f7-4a53-8128-35d8bf1d46f0" />
 
 ### After
 
-<img width="1688" height="1471" alt="屏幕截图 2026-04-16 232715" src="https://github.com/user-attachments/assets/d59bf574-447d-468d-a6a4-beb3d82e2006" />
+<img width="2746" height="1420" alt="image" src="https://github.com/user-attachments/assets/7ea104f5-88c5-4876-94ef-c50216e9d2c5" />
+<img width="432" height="498" alt="image" src="https://github.com/user-attachments/assets/c4df1b27-04b8-4673-970f-c258d07c4e6e" />
+
+
