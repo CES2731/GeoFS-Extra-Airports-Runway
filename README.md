@@ -66,7 +66,7 @@ the new added runways have **usable PAPI light** ,**usebale ILS** , **Tp point o
 
 ## Effect display image
 
-**Add RWY10 for ZJHK,you can see the new added runway on the left**
+**Add Rwys for ZGGG,you can see the new added runways**
 
 ### Before
 
