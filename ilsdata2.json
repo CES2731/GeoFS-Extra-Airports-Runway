@@ -1,0 +1,26 @@
+[
+    {
+        "icao": "ZBHH",
+        "ident": "07",
+        "lat": 40.46367311847312,
+        "lon": 111.55645323843642,
+        "heading": 64.63,
+        "lengthFt": 12467,
+        "widthFt": 148,
+        "freq": 109700,
+        "slope": 3.0,
+        "major": true
+    },
+    {
+        "icao": "ZBHH",
+        "ident": "08",
+        "lat": 40.481558356427385,
+        "lon": 111.5506599977816,
+        "heading": 64.63,
+        "lengthFt": 11155,
+        "widthFt": 148,
+        "freq": 111500,
+        "slope": 3.0,
+        "major": true
+    }
+]
